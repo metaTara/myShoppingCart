@@ -27,11 +27,29 @@ function displayProducts() {
 		temp.type = "button";
 		temp.dataset.id = i;
 		temp.className = "btn btn-primary m-2";
-	//	temp.addEventListener("click", addToCart);
+		temp.addEventListener("click", addToCart);
 		eachProduct.appendChild(temp);
 		eachProductWrapper.appendChild(eachProduct);
 		productsDiv.appendChild(eachProductWrapper);
 	}
 }
+
+// FUNCTION: called when 'Add to Cart' is clicked.
+// checks if item exits in the cart. It it does, the quantity is incremented else it is set to 1.
+const addToCart = (e) => {
+	let temp;
+	temp = e.target.dataset.id; // element to be added to cart
+	if (temp) {
+		if (cartItems[temp]) {
+			console.log("existing item", cartItems);
+			cartItems[temp] += 1;
+		} else {
+			console.log("new item");
+			cartItems[temp] = 1;
+		}
+
+		displayCart();
+	}
+};
 
 window.addEventListener("DOMContentLoaded", displayProducts);
