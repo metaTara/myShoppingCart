@@ -18,9 +18,10 @@ function displayProducts() {
 		eachProduct.style = "max-width: 15rem;";
 		eachProduct.innerHTML += `
                     <img id='product_image' src='${products[i].imgURL}'/>
-                    <div id='product_name'><h5 class='card-title card-body'> ${products[i].name}</h5></div>
-                    <div id='product_description' class='card-body'> ${products[i].description}</div>
-                    <div id='product_price' class='card-body'> $${products[i].price}</div>
+                    <div class = "card-body">
+                    <h5 class='card-title'> ${products[i].name}</h5>
+                    <div id='product_description'> ${products[i].description}</div>
+                    <h6> $${products[i].price}<h6></div>
                 `;
 		// creating Add to cart button and adding addEventListner event
 		newElement = document.createElement("button");
