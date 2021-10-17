@@ -3,8 +3,9 @@ const cartItems = {};
 
 //FUNCTION: displayProducts : iterates through 'products' object in products.js. Event-listner is added to each 'Add To Cart' button and appended to the html element.
 function displayProducts() {
-	let temp, eachProduct;
-	let productsDiv = document.getElementById("products"); // Products HTML element
+	let newElement, eachProduct, productsDiv;
+	
+    productsDiv = document.getElementById("products"); // Products HTML element
 	for (i in products) {
 		// each product Wrapper
 		eachProductWrapper = document.createElement("div");
@@ -22,13 +23,13 @@ function displayProducts() {
                     <div id='product_price' class='card-body'> $${products[i].price}</div>
                 `;
 		// creating Add to cart button and adding addEventListner event
-		temp = document.createElement("button");
-		temp.innerHTML = "Add to cart";
-		temp.type = "button";
-		temp.dataset.id = i;
-		temp.className = "btn btn-primary m-2";
-		temp.addEventListener("click", addToCart);
-		eachProduct.appendChild(temp);
+		newElement = document.createElement("button");
+		newElement.innerHTML = "Add to cart";
+		newElement.type = "button";
+		newElement.dataset.id = i;
+		newElement.className = "btn btn-primary m-2";
+		newElement.addEventListener("click", addToCart);
+		eachProduct.appendChild(newElement);
 		eachProductWrapper.appendChild(eachProduct);
 		productsDiv.appendChild(eachProductWrapper);
 	}
@@ -38,15 +39,14 @@ function displayProducts() {
 // FUNCTION: called when 'Add to Cart' is clicked.
 // checks if item exits in the cart. It it does, the quantity is incremented else it is set to 1.
 const addToCart = (e) => {
-	let temp;
-	temp = e.target.dataset.id; // element to be added to cart
-	if (temp) {
-		if (cartItems[temp]) {
+	let key = e.target.dataset.id; // item to be added to cart
+	if (key) {
+		if (cartItems[key]) {
 			console.log("existing item", cartItems);
-			cartItems[temp] += 1;
+			cartItems[key] += 1;
 		} else {
 			console.log("new item");
-			cartItems[temp] = 1;
+			cartItems[key] = 1;
 		}
 
 		displayCart();
@@ -55,14 +55,17 @@ const addToCart = (e) => {
 
 //FUNCTION: displayCart : displays the cart items. Eventlistner is added for Quantity and Remove-item button.
 function displayCart() {
-	let temp,
+    // elements variables
+	let newElement,
 		c_tr,
 		c_th,
 		c_td,
-		count = 1,
-		subTotal = 0,
-		totalPrice = 0;
-	let cartDiv, cartTable;
+        cartDiv,
+        cartTable;
+    // increament and total variables
+    let count = 1,
+        subTotal = 0,
+        totalPrice = 0;
 
 	cartDiv = document.getElementById("cart"); // Cart HTML element
 
@@ -103,15 +106,15 @@ function displayCart() {
 			c_tr.appendChild(c_td);
 			
 			c_td = document.createElement("td");
-			temp = document.createElement("input"); // item quantity element
-			temp.id = "itemQuantity";
-			temp.type = "number";
-			temp.min = 1;
-			temp.dataset.id = key;
-			temp.value = cartItems[key];
-			temp.addEventListener("change", updateCart); // updating cart if quantity changes
-			temp.innerHTML = cartItems[key];
-			c_td.appendChild(temp);
+			newElement = document.createElement("input"); // item quantity element
+			newElement.id = "itemQuantity";
+			newElement.type = "number";
+			newElement.min = 1;
+			newElement.dataset.id = key;
+			newElement.value = cartItems[key];
+			newElement.addEventListener("change", updateTotals); // updating cart if quantity changes
+			newElement.innerHTML = cartItems[key];
+			c_td.appendChild(newElement);
 			c_tr.appendChild(c_td);
 
 			c_td = document.createElement("td");
@@ -119,17 +122,18 @@ function displayCart() {
 			c_tr.appendChild(c_td);
 
 			c_td = document.createElement("td");
+            c_td.id = `subTotal_${key}`;
 			c_td.innerHTML = `$${subTotal}`; // item subTotal
 			c_tr.appendChild(c_td);
 
 			c_td = document.createElement("td");
-			temp = document.createElement("button");
-			temp.innerHTML = "X";
-			temp.type = "button";
-			temp.dataset.id = key;
-			temp.className = "btn btn-primary";
-			temp.addEventListener("click", removeFromCart); // removing item from Cart if clicked
-			c_td.appendChild(temp);
+			newElement = document.createElement("button");
+			newElement.innerHTML = "X";
+			newElement.type = "button";
+			newElement.dataset.id = key;
+			newElement.className = "btn btn-primary";
+			newElement.addEventListener("click", removeFromCart); // removing item from Cart if clicked
+			c_td.appendChild(newElement);
 			c_tr.appendChild(c_td);
 
 			cartTableBody.appendChild(c_tr);
@@ -140,32 +144,38 @@ function displayCart() {
 		cartDiv.appendChild(cartTable);
 
 		//displaying Total
-		temp = document.createElement("div");
-		temp.className = "container d-flex justify-content-end";
-		temp.innerHTML = `<h5>Total : $${totalPrice}<h5>`;
-		cartDiv.appendChild(temp);
+		newElement = document.createElement("div");
+        newElement.id = `total`;
+		newElement.className = "container d-flex justify-content-end";
+		newElement.innerHTML = `<h5>Total : $${totalPrice}<h5>`;
+		cartDiv.appendChild(newElement);
 	}
 }
 
 //FUNCTION: removeFromCart : called when X button is clicked on an item.
 const removeFromCart = (e) => {
-	let temp;
-
-	temp = e.target.dataset.id; // item to delete
-	if (temp) {
-		delete cartItems[temp];
+	let key = e.target.dataset.id; // item to delete
+	if (key) {
+		delete cartItems[key];
 		displayCart();
 	}
 };
 
-//FUNCTION: updateCart : called when Quantity changes for an item
-const updateCart = (e) => {
-	let temp;
+//FUNCTION: updateTotals : called when Quantity changes for an item. Totals are recalcualted.
+const updateTotals = (e) => {
+    let totalsElement, subTotal=0, totalPrice=0;
+	let newQuantity = e.target.value;
+    let key = e.target.dataset.id;
 
-	temp = e.target.value;
-    if (temp) {
-        cartItems[e.target.dataset.id] = Number(temp);
-        displayCart();
+    if (newQuantity > 0) {
+        cartItems[key] = Number(newQuantity);
+        subTotal = products[key].price * newQuantity;
+        totalsElement = document.getElementById(`subTotal_${key}`); // redo subtotal
+        totalsElement.innerHTML = `$${subTotal}`;
+        for (key in cartItems) {
+            totalPrice += products[key].price * cartItems[key];
+        }
+        document.getElementById(`total`).innerHTML = `<h5>Total : $${totalPrice}<h5>`; // redo total
     }
 };
 
