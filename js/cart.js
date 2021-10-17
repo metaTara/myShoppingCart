@@ -6,35 +6,35 @@ function displayProducts() {
 	let newElement, eachProduct, productsDiv;
 	
     productsDiv = document.getElementById("products"); // Products HTML element
-	for (i in products) {
+	for (let key in products) {
 		// each product Wrapper
 		eachProductWrapper = document.createElement("div");
-		eachProductWrapper.dataset.id = i;
+		eachProductWrapper.dataset.id = key;
 		eachProductWrapper.className = "col mb-2";
 		// each product card
 		eachProduct = document.createElement("div");
-		eachProduct.dataset.id = i;
+		eachProduct.dataset.id = key;
 		eachProduct.className = "card h-100";
 		eachProduct.style = "max-width: 15rem;";
 		eachProduct.innerHTML += `
-                    <img id='product_image' src='${products[i].imgURL}'/>
+                    <img id='product_image' src='${products[key].imgURL}'/>
                     <div class = "card-body">
-                    <h5 class='card-title'> ${products[i].name}</h5>
-                    <div id='product_description'> ${products[i].description}</div>
-                    <h6> $${products[i].price}<h6></div>
+                    <h5 class='card-title'> ${products[key].name}</h5>
+                    <div id='product_description'> ${products[key].description}</div>
+                    <h6> $${products[key].price}<h6></div>
                 `;
 		// creating Add to cart button and adding addEventListner event
 		newElement = document.createElement("button");
 		newElement.innerHTML = "Add to Cart";
 		newElement.type = "button";
-		newElement.dataset.id = i;
-		newElement.className = "btn btn-success m-2";
-		newElement.addEventListener("click", addToCart);
+		newElement.dataset.id = key;
+		newElement.className = "btn btn-success btn-sm m-2";
+		newElement.addEventListener("click", addToCart); // add item to cart when clicked
 		eachProduct.appendChild(newElement);
 		eachProductWrapper.appendChild(eachProduct);
 		productsDiv.appendChild(eachProductWrapper);
 	}
-	displayCart();
+	//displayCart(); uncomment if local storage is added
 }
 
 // FUNCTION: called when 'Add to Cart' is clicked.
@@ -133,7 +133,7 @@ function displayCart() {
 			newElement.type = "button";
 			newElement.dataset.id = key;
 			newElement.className = "btn btn-danger btn-sm";
-			newElement.addEventListener("click", removeFromCart); // removing item from Cart if clicked
+			newElement.addEventListener("click", removeFromCart); // removing item from Cart if clicked. 
 			c_td.appendChild(newElement);
 			c_tr.appendChild(c_td);
 
