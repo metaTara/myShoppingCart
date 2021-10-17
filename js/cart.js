@@ -75,7 +75,7 @@ function displayCart() {
 		// add cart items:
 		cartDiv.innerHTML = "";
 		cartTable = document.createElement("table");
-		cartTable.className = "table";
+		cartTable.className = "table table-sm";
 		cartTable.innerHTML = `
                     <thead>
                     <tr>
@@ -131,7 +131,7 @@ function displayCart() {
 			newElement.innerHTML = "X";
 			newElement.type = "button";
 			newElement.dataset.id = key;
-			newElement.className = "btn btn-danger";
+			newElement.className = "btn btn-danger btn-sm";
 			newElement.addEventListener("click", removeFromCart); // removing item from Cart if clicked
 			c_td.appendChild(newElement);
 			c_tr.appendChild(c_td);
@@ -146,8 +146,8 @@ function displayCart() {
 		//displaying Total
 		newElement = document.createElement("div");
         newElement.id = `total`;
-		newElement.className = "container d-flex justify-content-end";
-		newElement.innerHTML = `<h5>Total : $${totalPrice}<h5>`;
+		newElement.className = "container text-end";
+		newElement.innerHTML = `<h5 class="me-5">Total : $${totalPrice}<h5>`;
 		cartDiv.appendChild(newElement);
 	}
 }
@@ -175,7 +175,7 @@ const updateTotals = (e) => {
         for (key in cartItems) {
             totalPrice += products[key].price * cartItems[key];
         }
-        document.getElementById(`total`).innerHTML = `<h5>Total : $${totalPrice}<h5>`; // redo total
+        document.getElementById(`total`).innerHTML = `<h5 class="me-5">Total : $${totalPrice}<h5>`; // redo total
     }
 };
 
