@@ -24,10 +24,10 @@ function displayProducts() {
                 `;
 		// creating Add to cart button and adding addEventListner event
 		newElement = document.createElement("button");
-		newElement.innerHTML = "Add to cart";
+		newElement.innerHTML = "Add to Cart";
 		newElement.type = "button";
 		newElement.dataset.id = i;
-		newElement.className = "btn btn-primary m-2";
+		newElement.className = "btn btn-success m-2";
 		newElement.addEventListener("click", addToCart);
 		eachProduct.appendChild(newElement);
 		eachProductWrapper.appendChild(eachProduct);
@@ -131,7 +131,7 @@ function displayCart() {
 			newElement.innerHTML = "X";
 			newElement.type = "button";
 			newElement.dataset.id = key;
-			newElement.className = "btn btn-primary";
+			newElement.className = "btn btn-danger";
 			newElement.addEventListener("click", removeFromCart); // removing item from Cart if clicked
 			c_td.appendChild(newElement);
 			c_tr.appendChild(c_td);
